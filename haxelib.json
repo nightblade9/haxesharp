@@ -1,0 +1,12 @@
+{
+    "name": "haxesharp",
+    "version": "0.1.0",
+    "releasenote": "Test and random functions",
+    "url": "https://github.com/nightblade9/haxesharp",
+    "description": "C#-friendly APIs for Haxe",
+    "tags": ["cross", "extension", "utility"],
+    "license": "MIT",    
+    "classPath": "src",
+    "contributors": ["nightblade9"],
+    "dependencies": { }
+}
