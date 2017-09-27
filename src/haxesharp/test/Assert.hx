@@ -1,13 +1,12 @@
 package haxesharp.test;
 
 /**
- * Used to provide NUnit-style Assert.That(...) and Assert.AreEqual helpers.
+ * Used to provide NUnit-style Assert.that(...) helpers. Example usages:
+ * `Assert.that(x, Is.equalTo(y))`
+ * `Assert.that(x, Is.not.equalTo(y))`
 */
 class Assert
 {
-    // Assert.that(x, Is.EqualTo(y))
-    // Assert.that(x, Is.Not.Null)
-    // Assert.that(x, Is.Not.EqualTo(y))
     public static function that(actual:Any, is:Is):Void
     {
         if (!is.evaluate(actual))
