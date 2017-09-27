@@ -17,4 +17,4 @@ You can also subclass `Exception` to create your own exception hierarchy.
 The `Assert` class includes several methods similar to fluent assertions in .NET. For the full API, check the source code. Examples include:
 
 - `Assert.that(actual, Is.equalTo(expected))`
-- `Assert.that(x, Is.not.equalTo(13))`
+- `Assert.that(x, Is.not(13))`

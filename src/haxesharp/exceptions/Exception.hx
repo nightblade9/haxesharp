@@ -1,12 +1,11 @@
 // Mostly copy-pasted from thx.core.Error
-package haxesharp;
+package haxesharp.exceptions;
 
 import haxe.PosInfos;
 import haxe.CallStack;
 
 /**
-Defines a generic Error type. When the target platform is JS, `Error` extends the native
-`js.Error` type.
+Defines a base class exception.
 **/
 class Exception #if js extends js.Error #end {
 #if !js

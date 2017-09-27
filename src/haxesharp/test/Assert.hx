@@ -1,5 +1,7 @@
 package haxesharp.test;
 
+import haxesharp.exceptions.AssertionFailedException;
+
 /**
  * Used to provide NUnit-style Assert.that(...) helpers. Example usages:
  * `Assert.that(x, Is.equalTo(y))`
@@ -11,7 +13,7 @@ class Assert
     {
         if (!is.evaluate(actual))
         {
-            throw new Exception('Expected ${is.expected} but got ${actual}');
+            throw new AssertionFailedException('Expected ${is.expected} but got ${actual}');
         }
     }
 }
