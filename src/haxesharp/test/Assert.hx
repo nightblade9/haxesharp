@@ -9,9 +9,13 @@ import haxesharp.exceptions.AssertionFailedException;
 */
 class Assert
 {
-    public static function that(actual:Any, is:Is):Void
+    public static function that(actual:Any, ?is:Is):Void
     {
-        if (!is.evaluate(actual))
+        if (is == null && actual != true)
+        {
+            throw new AssertionFailedException("Expected true, got false");
+        }
+        else if (is != null && !is.evaluate(actual))
         {
             throw new AssertionFailedException('Expected ${is.expected} but got ${actual}');
         }

@@ -1,5 +1,6 @@
 import massive.munit.TestSuite;
 
+import haxesharp.random.RandomTest;
 import haxesharp.test.AssertTest;
 
 /**
@@ -14,6 +15,7 @@ class TestSuite extends massive.munit.TestSuite
 	{
 		super();
 
+		add(haxesharp.random.RandomTest);
 		add(haxesharp.test.AssertTest);
 	}
 }

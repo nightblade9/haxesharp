@@ -12,6 +12,14 @@ Simply `throw new Exception("HP should never be zero or less");` to throw an exc
 
 You can also subclass `Exception` to create your own exception hierarchy.
 
+## Random
+
+You can use the `Random` class to generate random numbers:
+
+- `Random.next()` returns an integer
+- `Random.next(n)` returns an integer in the range [0..n) (excludes `n`)
+- `Random.next(a, b)` returns a number `n` that satisfies `a <= n < b`
+
 ## Testing
 
 The `Assert` class includes several methods similar to fluent assertions in .NET. For the full API, check the source code. Examples include:

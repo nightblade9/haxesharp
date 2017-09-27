@@ -8,6 +8,27 @@ import haxesharp.exceptions.AssertionFailedException;
 class AssertTest 
 {
 	@Test
+	public function assertThatPassesIfValueIsTrue():Void
+	{
+		// Doesn't throw
+		Assert.that(true);
+	}
+
+	@Test
+	public function assertThatThrowsIfValueIsFalse():Void
+	{
+		try
+		{
+			Assert.that(false);
+			throw "Assert.that(false) didn't throw";
+		}
+		catch (e:AssertionFailedException)
+		{
+			// Pass!
+		}
+	}
+
+	@Test
 	public function assertThatIsEqualToPassesIfValuesAreEqual():Void
 	{
 		var x = 13;
