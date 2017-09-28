@@ -66,4 +66,18 @@ class RandomTest
         n = r.next(-100, -200);
         Assert.that(n >= -200 && n < -100);
     }
+
+    @Test
+    public function constructorSeedSetsSeed()
+    {
+        var seed = 12321;
+
+        var r1 = new Random(seed);
+        var r2 = new Random(seed);
+
+        Assert.that(r1.next(), Is.equalTo(r2.next()));
+        Assert.that(r1.next(133), Is.equalTo(r2.next(133)));
+        Assert.that(r1.next(1, 6), Is.equalTo(r2.next(1, 6)));
+        Assert.that(r1.next(-10, -20), Is.equalTo(r2.next(-10, -20)));
+    }
 }

@@ -1,6 +1,7 @@
 package haxesharp.random;
 
 import haxesharp.exceptions.Exception;
+import de.polygonal.core.math.random.ParkMiller;
 
 /**
 A random number generator. No guarantees on anything (don't use it for security!)
@@ -8,8 +9,20 @@ A random number generator. No guarantees on anything (don't use it for security!
 class Random
 {
     public static inline var MAX_INT:Int = 2147483647; // 2^31 - 1
+    private var randomGenerator:ParkMiller;
 
-    public function new() { }
+    /**
+     *  Creates a new random number generator. If you specify a seed, that seed gets used.
+     */
+    public function new(?seed:Int)
+    {
+        if (seed == null)
+        {
+            seed = Math.floor(Math.random() * MAX_INT);
+        }
+
+        this.randomGenerator = new ParkMiller(seed);
+    }
 
     /**
     If no parameters are specified, generates a random integer in the range [0 ... 2^31) (max is 2^31 - 1)
@@ -20,13 +33,13 @@ class Random
     {
         if (a == null && b == null)
         {
-            return Math.floor(Math.random() * MAX_INT);
+            return Math.floor(this.randomGenerator.randomFloat() * MAX_INT);
         }
         else if (a != null && b == null)
         {
             if (a >= 0)
             {
-                return Math.floor(Math.random() * a);
+                return Math.floor(this.randomGenerator.randomFloat() * a);
             }
             else
             {
@@ -38,7 +51,7 @@ class Random
             var min:Int = a < b ? a : b;
             var max:Int = min == a ? b : a;
             var diff:Int = max - min;
-            return Math.floor(Math.random() * diff) + min;
+            return Math.floor(this.randomGenerator.randomFloat() * diff) + min;
         }
         else
         {

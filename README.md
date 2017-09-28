@@ -16,8 +16,8 @@ You can also subclass `Exception` to create your own exception hierarchy.
 
 ## Random
 
-You can use the `Random` class to generate random numbers:
-
+You can use the `Random` class to generate random numbers, optionally passing in a seed if you want deterministic random. APIs:
+- `new Random()` creates a random generator; `new Random(seed)` creates a seeded random generator.
 - `Random.next()` returns an integer
 - `Random.next(n)` returns an integer in the range [0..n) (excludes `n`)
 - `Random.next(a, b)` returns a number `n` that satisfies `a <= n < b`
