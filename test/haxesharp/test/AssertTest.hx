@@ -167,4 +167,20 @@ class AssertTest
 			throw 'Assertions should throw an AssertionFailedException but threw a ${Type.getClassName(Type.getClass(e))} instead';
 		}
 	}
+
+	@Test
+	public function assertFailFailsImmediatelyWithMessage()
+	{
+		var expected = "Invalid operationz";
+
+		try
+		{
+			Assert.fail(expected);
+			throw 'Assert.fail did not fail!';
+		}
+		catch (e:AssertionFailedException)
+		{
+			// Pass
+		}
+	}
 }

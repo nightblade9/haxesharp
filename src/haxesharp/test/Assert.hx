@@ -20,6 +20,11 @@ class Assert
             throw new AssertionFailedException('Expected ${is.expected} but got ${actual}');
         }
     }
+
+    public static function fail(message:String):Void
+    {
+        throw new AssertionFailedException(message);
+    }
 }
 
 // Extension method
