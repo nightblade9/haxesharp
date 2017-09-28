@@ -80,4 +80,15 @@ class RandomTest
         Assert.that(r1.next(1, 6), Is.equalTo(r2.next(1, 6)));
         Assert.that(r1.next(-10, -20), Is.equalTo(r2.next(-10, -20)));
     }
+
+    @Test
+    public function defaultSeedGeneratesDifferentResults()
+    {
+        var r1 = new Random();
+        var r2 = new Random();
+
+        // Default .next(...) returns something in the range [0 ... 2^31 - 1]
+        // It's possible, but very unlikely, to get both generating the same number.
+        Assert.that(r1.next(), Is.not(r2.next()));
+    }
 }
