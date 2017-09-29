@@ -51,6 +51,7 @@ class Regex
     /**
     Finds the first match of this regex on input and returns it.
     Use match.Success to tell if we found anything or not.
+    Unlike C#, these are base-zero, not base-one.
     */
     public function match(input:String):Match
     {                
