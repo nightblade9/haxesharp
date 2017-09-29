@@ -38,4 +38,23 @@ class RegexTest
         Assert.that(actual[3], Is.equalTo("44"));
         Assert.that(actual[4], Is.equalTo("5"));
     }
+
+    @Test
+    public function matchReturnsMatchesAndCount()
+    {
+        var actual = new Regex("(.at)").match("cat bat dog frog rat");
+        Assert.that(actual.success, Is.equalTo(true));
+        Assert.that(actual.groups.length, Is.equalTo(3));
+        Assert.that(actual.groups[0], Is.equalTo("cat"));
+        Assert.that(actual.groups[1], Is.equalTo("bat"));
+        Assert.that(actual.groups[2], Is.equalTo("rat"));
+    }
+
+    @Test
+    public function matchReturnsEmptyListAndSuccessFalseIfNoMatchesFound()
+    {
+        var actual = new Regex("(\\d+)").match("hi there");
+        Assert.that(actual.success, Is.equalTo(false));
+        Assert.that(actual.groups.length, Is.equalTo(0));
+    }
 }
