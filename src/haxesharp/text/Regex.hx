@@ -23,20 +23,34 @@ class Regex
         {
             options = "";
         }
-        
-        if (options.indexOf("g") == -1)
-        {
-            options += "g";
-        }
 
-        //var regEx = ~/([0-9]+)/;
         var regex = new EReg(pattern, options);
         
         var matches = [];
         while (regex.match(input))
         {
-            var match = regex.matched(1);
-            matches.push(match);
+            // This is HORRIBLE. Haxe doesn't provide any way to get the number of groups.
+            // With regexes with multiple groups (eg: (\d+) (\w+)), we have no recourse
+            // except to keep calling .matched(n) until we get an exception. 
+            var stop:Bool = false;
+            var nextGroupNum:Int = 1;
+
+            while (!stop)
+            {
+                try
+                {
+                    var match = regex.matched(nextGroupNum);
+                    matches.push(match);
+                    nextGroupNum++;                    
+                }
+                catch (e:Any)
+                {
+                    stop = true;
+                }
+            }
+            
+            // For expressions with multiple things to match (eg. \d+ vs. "11 22 3333"), keep
+            // processing the rest of the input.
             input = regex.matchedRight();
         }
         return matches;
