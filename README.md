@@ -6,6 +6,16 @@ Some helpers that make Haxe more "C# friendly." If you're a .NET developer, you 
 
 In general, we try to stick to Haxe-style conventions (eg. camel-case method names), while making APIs as familiar as possible for .NET APIs.
 
+# Installation
+
+Installation is available from Git only, via `haxelib`.
+
+```
+haxelib git https://github.com/nightblade9/haxesharp.git
+```
+
+For now, `hxslam` is required for short lambdas (and LINQ). To add it, add `-lib hxslam` to your `.hxml` file.
+
 # API
 
 ## Exceptions
