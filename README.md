@@ -14,6 +14,20 @@ Simply `throw new Exception("HP should never be zero or less");` to throw an exc
 
 You can also subclass `Exception` to create your own exception hierarchy.
 
+## LINQ and Lambdas
+
+With our LINQ helpers, you can write LINQ-like queries:
+
+```
+using haxesharp.collections.Linq;
+
+var numbers = [1, 2, 3, 4, 5, 6, 7];
+var even = numbers.where((n) => n % 2 == 0);
+trace(even); // [2, 4, 6]
+```
+
+C#-style short-lambdas are available via the excellent [hxslam](https://github.com/bynuff/hxslam) library.
+
 ## Random
 
 You can use the `Random` class to generate random numbers, optionally passing in a seed if you want deterministic random. APIs:
