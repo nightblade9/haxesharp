@@ -1,5 +1,6 @@
 package haxesharp.collections;
 
+import haxesharp.random.Random;
 import haxesharp.exceptions.InvalidOperationException;
 
 /**
@@ -7,6 +8,39 @@ import haxesharp.exceptions.InvalidOperationException;
  */
 class Linq<T>
 {
+    /**
+    Returns a copy of the array with elements shuffled. Uses the Fisher-Yates algorithm.
+    If desired, you can pass in a random number generator; if not, a new one is generated.
+    */
+    // Mostly copied from https://stackoverflow.com/a/110570/8641842
+    public static function shuffle<T>(array:Array<T>, ?rng:Random)
+    {
+        if (rng == null)
+        {
+            rng = new Random();
+        }
+
+        // Make a copy of the array
+        var toReturn = new Array<T>();
+        while (toReturn.length != array.length)
+        {
+            toReturn.push(array[toReturn.length]);
+        }
+
+        // Shuffle
+        var n = toReturn.length;
+        while (n > 1)
+        {
+            var k = rng.next(n);
+            n--;
+            var temp = toReturn[n];
+            toReturn[n] = toReturn[k];
+            toReturn[k] = temp;
+        }
+
+        return toReturn;
+    }
+
     public static function take<T>(array:Array<T>, n:Int):Array<T>
     {
         if (n < 0)

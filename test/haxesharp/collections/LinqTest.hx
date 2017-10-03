@@ -70,4 +70,26 @@ class LinqTest
             // Pass
         }
     }
+
+    @Test
+    public function shuffleReturnsShuffledArray()
+    {
+        // If I fill an array with 1-10, shuffle, then compare the shuffled
+        // integers to the original, there should be some differences. They
+        // should never be exactly the same.
+
+        var expected = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+        var actual = expected.shuffle();
+
+        var numChanged = 0;
+        for (i in actual)
+        {
+            if (actual[i] != expected[i])
+            {
+                numChanged++;
+            }
+        }
+
+        Assert.that(numChanged > 0);
+    }
 }
