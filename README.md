@@ -16,8 +16,6 @@ Installation is available from Git only, via `haxelib`.
 haxelib git https://github.com/nightblade9/haxesharp.git
 ```
 
-For now, `hxslam` is required for short lambdas (and LINQ). To add it, add `-lib hxslam` to your `.hxml` file.
-
 # API
 
 ## Exceptions
