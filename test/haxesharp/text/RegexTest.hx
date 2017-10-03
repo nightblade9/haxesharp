@@ -57,4 +57,15 @@ class RegexTest
         Assert.that(actual.success, Is.equalTo(false));
         Assert.that(actual.groups.length, Is.equalTo(0));
     }
+
+    @Test
+    public function matchExtractsGroups()
+    {
+        var actual = new Regex("(\\w+) (\\d+) ([^\\s]+)", "g").match("Protagonist 231 right?!");
+        Assert.that(actual.success);
+        Assert.that(actual.groups.length, Is.equalTo(3));
+        Assert.that(actual.groups[0], Is.equalTo("Protagonist"));
+        Assert.that(actual.groups[1], Is.equalTo("231"));
+        Assert.that(actual.groups[2], Is.equalTo("right?!"));
+    }
 }

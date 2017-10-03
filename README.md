@@ -6,6 +6,16 @@ Some helpers that make Haxe more "C# friendly." If you're a .NET developer, you 
 
 In general, we try to stick to Haxe-style conventions (eg. camel-case method names), while making APIs as familiar as possible for .NET APIs.
 
+# Installation
+
+Installation is available from Git only, via `haxelib`.
+
+```
+haxelib git https://github.com/nightblade9/haxesharp.git
+```
+
+For now, `hxslam` is required for short lambdas (and LINQ). To add it, add `-lib hxslam` to your `.hxml` file.
+
 # API
 
 ## Exceptions
@@ -13,6 +23,20 @@ In general, we try to stick to Haxe-style conventions (eg. camel-case method nam
 Simply `throw new Exception("HP should never be zero or less");` to throw an exception. You get a consistent stack-trace.
 
 You can also subclass `Exception` to create your own exception hierarchy.
+
+## LINQ and Lambdas
+
+With our LINQ helpers, you can write LINQ-like queries:
+
+```
+using haxesharp.collections.Linq;
+
+var numbers = [1, 2, 3, 4, 5, 6, 7];
+var even = numbers.where((n) => n % 2 == 0);
+trace(even); // [2, 4, 6]
+```
+
+C#-style short-lambdas are available via the excellent [hxslam](https://github.com/bynuff/hxslam) library.
 
 ## Random
 

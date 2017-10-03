@@ -2,6 +2,7 @@
 -main TestMain
 -lib munit
 -lib hamcrest
+-lib hxslam
 -lib polygonal-core
 -lib hxslam
 -cp src
