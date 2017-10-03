@@ -16,6 +16,26 @@ class Linq<T>
         return array.indexOf(object) > -1;
     }
 
+    public static function first<T>(array:Array<T>, ?predicate:T->Bool):T
+    {
+        if (predicate == null)
+        {
+            return array[0];
+        }
+        else
+        {
+            for (a in array)
+            {
+                if (predicate(a))
+                {
+                    return a;
+                }
+            }
+
+            return null;
+        }
+    }
+
     /**
     Returns a copy of the array with elements shuffled. Uses the Fisher-Yates algorithm.
     If desired, you can pass in a random number generator; if not, a new one is generated.

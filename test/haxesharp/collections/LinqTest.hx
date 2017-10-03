@@ -3,6 +3,7 @@ package haxesharp.collections;
 using haxesharp.collections.Linq;
 using haxesharp.exceptions.InvalidOperationException;
 using haxesharp.test.Assert;
+using haxesharp.text.StringExtensions;
 
 class LinqTest
 {
@@ -13,6 +14,39 @@ class LinqTest
         Assert.that(array.contains("cat"), Is.equalTo(true));
         Assert.that(array.contains("CAT"), Is.equalTo(false)); // not equal strings
         Assert.that(array.contains("hare"), Is.equalTo(false));
+    }
+
+    @Test
+    public function firstWithoutPredicateReturnsNullIfNoObjectsExist()
+    {
+        var a = [];
+        var actual = a.first();
+        Assert.that(actual, Is.equalTo(null));
+    }
+
+    
+    @Test
+    public function firstWithoutPredicateReturnsFirstObject()
+    {
+        var a = ["bell pepper", "tomato", "mushroom"];
+        var actual = a.first();
+        Assert.that(actual, Is.equalTo("bell pepper"));
+    }
+
+    @Test
+    public function firstReturnsFirstMatchingObject()
+    {
+        var a = ["bell pepper", "tomato", "mushroom"];
+        var actual = a.first((f) => f.length < 7);
+        Assert.that(actual, Is.equalTo("tomato"));
+    }
+
+    @Test
+    public function firstReturnsNullIfNoObjectsMatch()
+    {
+        var a = ["bell pepper", "tomato", "mushroom"];
+        var actual = a.first((f) => f.contains("x"));
+        Assert.that(actual, Is.equalTo(null));
     }
 
     @Test

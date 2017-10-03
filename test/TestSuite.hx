@@ -1,5 +1,6 @@
 import massive.munit.TestSuite;
 
+import haxesharp.text.StringExtensionsTest;
 import haxesharp.text.RegexTest;
 import haxesharp.collections.LinqTest;
 import haxesharp.random.RandomTest;
@@ -17,6 +18,7 @@ class TestSuite extends massive.munit.TestSuite
 	{
 		super();
 
+		add(haxesharp.text.StringExtensionsTest);
 		add(haxesharp.text.RegexTest);
 		add(haxesharp.collections.LinqTest);
 		add(haxesharp.random.RandomTest);
