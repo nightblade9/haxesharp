@@ -1,9 +1,9 @@
 import massive.munit.TestSuite;
 
+import haxesharp.text.RegexTest;
 import haxesharp.collections.LinqTest;
 import haxesharp.random.RandomTest;
 import haxesharp.test.AssertTest;
-import haxesharp.text.RegexTest;
 
 /**
  * Auto generated Test Suite for MassiveUnit.
@@ -17,9 +17,9 @@ class TestSuite extends massive.munit.TestSuite
 	{
 		super();
 
+		add(haxesharp.text.RegexTest);
 		add(haxesharp.collections.LinqTest);
 		add(haxesharp.random.RandomTest);
 		add(haxesharp.test.AssertTest);
-		add(haxesharp.text.RegexTest);
 	}
 }

@@ -7,6 +7,33 @@ class RandomTest
 {
     private static inline var NUM_ITERATIONS:Int = 10;
 
+
+
+    @Test
+    public function constructorSeedSetsSeed()
+    {
+        var seed = 12321;
+
+        var r1 = new Random(seed);
+        var r2 = new Random(seed);
+
+        Assert.that(r1.next(), Is.equalTo(r2.next()));
+        Assert.that(r1.next(133), Is.equalTo(r2.next(133)));
+        Assert.that(r1.next(1, 6), Is.equalTo(r2.next(1, 6)));
+        Assert.that(r1.next(-10, -20), Is.equalTo(r2.next(-10, -20)));
+    }
+
+    @Test
+    public function defaultSeedGeneratesDifferentResults()
+    {
+        var r1 = new Random();
+        var r2 = new Random();
+
+        // Default .next(...) returns something in the range [0 ... 2^31 - 1]
+        // It's possible, but very unlikely, to get both generating the same number.
+        Assert.that(r1.next(), Is.not(r2.next()));
+    }
+    
     @Test
     public function nextGeneratesIntegerUpToMaxInt()
     {
@@ -65,30 +92,5 @@ class RandomTest
 
         n = r.next(-100, -200);
         Assert.that(n >= -200 && n < -100);
-    }
-
-    @Test
-    public function constructorSeedSetsSeed()
-    {
-        var seed = 12321;
-
-        var r1 = new Random(seed);
-        var r2 = new Random(seed);
-
-        Assert.that(r1.next(), Is.equalTo(r2.next()));
-        Assert.that(r1.next(133), Is.equalTo(r2.next(133)));
-        Assert.that(r1.next(1, 6), Is.equalTo(r2.next(1, 6)));
-        Assert.that(r1.next(-10, -20), Is.equalTo(r2.next(-10, -20)));
-    }
-
-    @Test
-    public function defaultSeedGeneratesDifferentResults()
-    {
-        var r1 = new Random();
-        var r2 = new Random();
-
-        // Default .next(...) returns something in the range [0 ... 2^31 - 1]
-        // It's possible, but very unlikely, to get both generating the same number.
-        Assert.that(r1.next(), Is.not(r2.next()));
     }
 }

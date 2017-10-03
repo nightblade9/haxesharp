@@ -2,9 +2,11 @@
 
 [![Build Status](https://travis-ci.org/nightblade9/haxesharp.svg?branch=master)](https://travis-ci.org/nightblade9/haxesharp)
 
-Some helpers that make Haxe more "C# friendly." If you're a .NET developer, you will find these methods similar or identical to what the .NET APIs provide.
+HaxeSharp brings functionality to Haxe that is inspried by some of the best of what .NET has to offer. If you're a .NET developer, you will find these methods similar to what the .NET APIs provide. At the same time, they're written following the Haxe style and conventions.
 
-In general, we try to stick to Haxe-style conventions (eg. camel-case method names), while making APIs as familiar as possible for .NET APIs.
+In some cases, language functions make it difficult to achieve .NET's design (eg. Haxe doesn't support multiple constructors). We try to work around these cases, or in the worst case, provide some other alternative.
+
+HaxeSharp also tries to follow the principle of least surprise in cases where .NET doesn't; for example, we may throw exceptions for invalid cases (eg. `new Array<Int>() [1, 2, 3].take(17)`) even though .NET doesn't.
 
 # Installation
 
