@@ -7,21 +7,34 @@ using haxesharp.test.Assert;
 class LinqTest
 {
     @Test
-    public function whereReturnsArrayOfMatchingItems()
+    public function containsReturnsTrueOrFalseAppropriately()
     {
-        var input = ["one", "two", "three"];
-        var output = input.where((s) => s.indexOf("o") > -1);
-        Assert.that(output.length, Is.equalTo(2));
-        Assert.that(output[0], Is.equalTo("one"));
-        Assert.that(output[1], Is.equalTo("two"));
+        var array = ["cat", "dog", "mouse"];
+        Assert.that(array.contains("cat"), Is.equalTo(true));
+        Assert.that(array.contains("CAT"), Is.equalTo(false)); // not equal strings
+        Assert.that(array.contains("hare"), Is.equalTo(false));
     }
 
     @Test
-    public function whereReturnsEmptyArrayIfNothingMatches()
+    public function shuffleReturnsShuffledArray()
     {
-        var input = ["one", "two", "three"];
-        var empty = input.where((s) => s.length == 4);
-        Assert.that(empty.length, Is.equalTo(0));
+        // If I fill an array with 1-10, shuffle, then compare the shuffled
+        // integers to the original, there should be some differences. They
+        // should never be exactly the same.
+
+        var expected = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+        var actual = expected.shuffle();
+
+        var numChanged = 0;
+        for (i in actual)
+        {
+            if (actual[i] != expected[i])
+            {
+                numChanged++;
+            }
+        }
+
+        Assert.that(numChanged > 0);
     }
 
     @Test
@@ -72,24 +85,21 @@ class LinqTest
     }
 
     @Test
-    public function shuffleReturnsShuffledArray()
+    public function whereReturnsArrayOfMatchingItems()
     {
-        // If I fill an array with 1-10, shuffle, then compare the shuffled
-        // integers to the original, there should be some differences. They
-        // should never be exactly the same.
-
-        var expected = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-        var actual = expected.shuffle();
-
-        var numChanged = 0;
-        for (i in actual)
-        {
-            if (actual[i] != expected[i])
-            {
-                numChanged++;
-            }
-        }
-
-        Assert.that(numChanged > 0);
+        var input = ["one", "two", "three"];
+        var output = input.where((s) => s.indexOf("o") > -1);
+        Assert.that(output.length, Is.equalTo(2));
+        Assert.that(output[0], Is.equalTo("one"));
+        Assert.that(output[1], Is.equalTo("two"));
     }
+
+    @Test
+    public function whereReturnsEmptyArrayIfNothingMatches()
+    {
+        var input = ["one", "two", "three"];
+        var empty = input.where((s) => s.length == 4);
+        Assert.that(empty.length, Is.equalTo(0));
+    }
+
 }
