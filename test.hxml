@@ -1,5 +1,7 @@
 ## Neko
 -main TestMain
+
+# libs are duplicated in docs.hxml
 -lib munit
 -lib hamcrest
 -lib hxslam

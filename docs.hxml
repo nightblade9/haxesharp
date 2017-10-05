@@ -1,0 +1,15 @@
+-cp haxesharp
+-D doc-gen
+--macro include('haxesharp')
+--no-output
+
+# libs are duplicated in test.hxml
+-lib munit
+-lib hamcrest
+-lib hxslam
+-lib polygonal-core
+-lib hxslam
+
+# Generates using the neko target. If we ever have target-specific
+# docs, we need to add more targets here
+-xml bin/neko.xml
