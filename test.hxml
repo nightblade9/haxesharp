@@ -1,13 +1,14 @@
 ## Neko
+# libs are duplicated in docs.hxml
 -main TestMain
 
-# libs are duplicated in docs.hxml
 -lib munit
 -lib hamcrest
 -lib hxslam
 -lib polygonal-core
 -lib hxslam
--cp src
 
+-cp src
 -cp test
+
 -neko build/neko_test.n
