@@ -1,5 +1,6 @@
 ## Neko
-# libs are duplicated in docs.hxml
+## libs are duplicated in docs.hxml
+
 -main TestMain
 
 -lib munit
