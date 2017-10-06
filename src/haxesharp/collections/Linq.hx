@@ -16,6 +16,10 @@ class Linq<T>
         return array.indexOf(object) > -1;
     }
 
+    /**
+    If a predicate is supplied, returns the first element matching the predicate (or null if none are found).
+    If a predicate is not supplied, returns the first element in the array (or null).
+    */
     public static function first<T>(array:Array<T>, ?predicate:T->Bool):T
     {
         if (predicate == null)

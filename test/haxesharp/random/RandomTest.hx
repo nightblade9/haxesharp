@@ -3,11 +3,10 @@ package haxesharp.random;
 import haxesharp.test.Assert;
 import haxesharp.exceptions.Exception;
 
+@:access(haxesharp.random)
 class RandomTest
 {
     private static inline var NUM_ITERATIONS:Int = 10;
-
-
 
     @Test
     public function constructorSeedSetsSeed()

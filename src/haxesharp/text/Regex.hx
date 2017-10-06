@@ -2,6 +2,9 @@ package haxesharp.text;
 
 import haxesharp.exceptions.Exception;
 
+/**
+A regular expression class for matching and grouping.
+**/
 class Regex
 {
     private var regex:String;
@@ -9,7 +12,7 @@ class Regex
 
     /**
     Find all matches of the given input against the given pattern.
-    Optionally, with the given regex options (eg. ig)
+    Optionally, with the given regex options (eg. `ig`)
     Returns a list of matched substrings. Note that the regex must use grouping.    
     */
     public static function matches(input:String, pattern:String, ?options:String):Array<String>
@@ -56,6 +59,9 @@ class Regex
         return matches;
     }
 
+    /**
+    Creates a new regular expression, with options (optional).
+    **/
     public function new(regex:String, ?options:String)
     {
         this.regex = regex;

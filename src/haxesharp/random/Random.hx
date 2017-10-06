@@ -8,7 +8,7 @@ A random number generator. No guarantees on anything (don't use it for security!
 */
 class Random
 {
-    public static inline var MAX_INT:Int = 2147483647; // 2^31 - 1
+    private static inline var MAX_INT:Int = 2147483647; // 2^31 - 1
     private var randomGenerator:ParkMiller;
 
     /**
@@ -25,9 +25,9 @@ class Random
     }
 
     /**
-    If no parameters are specified, generates a random integer in the range [0 ... 2^31) (max is 2^31 - 1)
-    If only one parameter is specified, generates a random integer in the range [0 ... n) (excludes n)
-    If two parameters are specified, generates a random integer in the range [a ... b) (excludes b)
+    - If no parameters are specified, generates a random integer in the range `[0 ... 2^31)` (max is `2^31 - 1`)
+    - If only one parameter is specified, generates a random integer in the range `[0 ... n)` (excludes `n`)
+    - If two parameters are specified, generates a random integer in the range `[a ... b)` (excludes `b`)
     */
     public function next(?a:Int, ?b:Int):Int
     {
