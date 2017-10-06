@@ -69,9 +69,21 @@ Haxe ships with an `EReg` class which lacks in terms of usability. HaxeSharp pro
 
 Like .NET, you can write `x.contains(...)` on both strings and arrays.
 
-## Testing
+## Unit Testing
 
 In line with some of the NUnit fluent APIs, HaxeSharp includes an `Assert` class with several methods. Some of the most-commonly-used ones include:
 
 - `Assert.that(actual, Is.equalTo(expected))`
 - `Assert.that(x, Is.not(13))`
+
+These depend on `munit`, which is an excellent unit-testing tool for Haxe.
+
+# Contributing
+
+We welcome contributions from the community. If you would like to make a large change, please open an issue first to discuss it and receive feedback on it.
+
+- Any changes must include sufficient unit tests
+- To test your changes, run `haxelib run munit test` from the root of the repository
+- Please add [`dox`](https://github.com/HaxeFlixel/dox) markup to your classes so they are reasonably well explained in the API documentation
+
+We use Travis-CI for continuous integration. If you check in something that breaks the build, please take responsibility to investigate and resolve the build failure. (You can find the Travis link at the top of this README.)
