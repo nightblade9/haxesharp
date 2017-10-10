@@ -5,7 +5,6 @@
 -lib hamcrest
 -lib hxslam
 -lib polygonal-core
--lib hxslam
 
 -cp src
 -cp test
