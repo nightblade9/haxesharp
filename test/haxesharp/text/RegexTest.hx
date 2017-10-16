@@ -68,4 +68,22 @@ class RegexTest
         Assert.that(actual.groups[1], Is.equalTo("231"));
         Assert.that(actual.groups[2], Is.equalTo("right?!"));
     }
+
+    @Test
+    public function replaceReplacesAllInstancesIfMultipleExist()
+    {
+        var input = "44test1 str22i2ng3";
+        var output = new Regex("\\d+", "g").replace(input, "");
+        Assert.that(output, Is.equalTo("test string"));
+        // Didn't butcher the input, did we?
+        Assert.that(input != "test string");
+    }
+
+    @Test
+    public function replaceReturnsInputIfNothingMatches()
+    {
+        var input = "test string";
+        var output = new Regex("\\d+", "g").replace(input, "");
+        Assert.that(output, Is.equalTo(input));
+    }
 }

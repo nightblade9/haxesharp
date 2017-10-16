@@ -75,7 +75,27 @@ class Regex
     */
     public function match(input:String):Match
     {                
-        var groups = Regex.matches(input, this.regex, this.options);
+        var groups = Regex.matches(input, this.regex, this.options);        
         return new Match(groups.length > 0, groups);
+    }
+
+    /**
+    Finds all instances where this regex matches the input string, and
+    replaces those with the replacement string. Does not (yet) support
+    groups or named groups.
+    **/
+    public function replace(input:String, replacement:String):String
+    {
+        var output = input;
+        var regex = new EReg(this.regex, this.options);
+
+        while (regex.match(output))
+        {
+            var left = regex.matchedLeft();
+            var right = regex.matchedRight();
+            output = '${left}${right}';
+        }
+
+        return output;
     }
 }
