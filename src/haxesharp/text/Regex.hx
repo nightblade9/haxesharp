@@ -93,7 +93,7 @@ class Regex
         {
             var left = regex.matchedLeft();
             var right = regex.matchedRight();
-            output = '${left}${right}';
+            output = '${left}${replacement}${right}';
         }
 
         return output;

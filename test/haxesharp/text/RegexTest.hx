@@ -72,11 +72,11 @@ class RegexTest
     @Test
     public function replaceReplacesAllInstancesIfMultipleExist()
     {
-        var input = "44test1 str22i2ng3";
-        var output = new Regex("\\d+", "g").replace(input, "");
-        Assert.that(output, Is.equalTo("test string"));
+        var input = "vowels exist";
+        var output = new Regex("[aeiou]", "g").replace(input, "+");
+        Assert.that(output, Is.equalTo("v+w+ls +x+st"));
         // Didn't butcher the input, did we?
-        Assert.that(input != "test string");
+        Assert.that(input, Is.equalTo("vowels exist"));
     }
 
     @Test
