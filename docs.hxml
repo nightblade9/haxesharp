@@ -1,3 +1,9 @@
+###
+# NB: the order of lines really really matters. Moving even a single
+# line out of order could cause mysterious compilation errors.
+# Make sure you test changes line-by-line.
+###
+
 -cp haxesharp
 -D doc-gen
 --macro include('haxesharp')
