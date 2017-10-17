@@ -6,7 +6,6 @@
 # libs are duplicated in test.hxml
 -lib munit
 -lib hamcrest
--lib hxslam
 -lib polygonal-core
 -lib hxslam
 
