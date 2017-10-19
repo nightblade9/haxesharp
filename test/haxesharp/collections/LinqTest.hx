@@ -136,4 +136,21 @@ class LinqTest
         Assert.that(empty.length, Is.equalTo(0));
     }
 
+    @Test
+    public function anyReturnsTrueIfAnyElementsMatch()
+    {
+        var input = ["apple", "pear", "orange"];
+        // Only one contains "g"
+        Assert.that(input.any((fruit) => fruit.contains("g")), Is.equalTo(true));
+        // All three contain "a"
+        Assert.that(input.any((fruit) => fruit.contains("a")), Is.equalTo(true));
+        Assert.that(input.any((fruit) => fruit.contains("x")), Is.equalTo(false));
+    }
+    
+    @Test
+    public function anyReturnsTrueIfAnyElementsExistWhenPredicateIsNull()
+    {
+        Assert.that(["apple", "pear", "orange"].any(), Is.equalTo(true));
+        Assert.that([].any(), Is.equalTo(false));
+    }
 }

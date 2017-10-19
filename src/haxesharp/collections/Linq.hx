@@ -1,5 +1,6 @@
 package haxesharp.collections;
 
+using haxesharp.collections.Linq;
 import haxesharp.random.Random;
 import haxesharp.exceptions.InvalidOperationException;
 
@@ -8,6 +9,22 @@ import haxesharp.exceptions.InvalidOperationException;
  */
 class Linq<T>
 {
+    /**
+    Returns true if there are any elements that match the predicate.
+    If you pass in a null predicate, checks if there are any elements in the array.
+    */
+    public static function any<T>(array:Array<T>, ?predicate:T->Bool):Bool
+    {
+        if (predicate == null)
+        {
+            return array.length > 0;
+        }
+        else
+        {
+            return array.where((object) => predicate(object) == true).length > 0;
+        }
+    }
+    
     /**
     Returns true if the array contains the target item. Uses equality by reference.
     */
