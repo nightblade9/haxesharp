@@ -1,7 +1,7 @@
 package haxesharp.exceptions;
 
 /**
-The exception that is thrown when a null reference is passed to a method that does not accept it as a valid argument.
+An exception indicating that the given arguments are not valid
 */
 class ArgumentException extends Exception
 {
@@ -12,7 +12,7 @@ class ArgumentException extends Exception
     {
         if (message == null)
         {
-            message = "Argument was null.";
+            message = "Argument was not valid.";
         }
 
         super(message);
