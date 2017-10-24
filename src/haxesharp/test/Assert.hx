@@ -1,5 +1,6 @@
 package haxesharp.test;
 
+import haxe.PosInfos;
 import haxesharp.exceptions.AssertionFailedException;
 
 /**
@@ -34,6 +35,29 @@ class Assert
     public static function fail(message:String):Void
     {
         throw new AssertionFailedException(message);
+    }
+
+    public static function throws(expectedType:Dynamic, code:Dynamic, ?info:PosInfos):Dynamic
+    {
+        // TODO: refactor into "massive.munit.Assert.throws" after 2.1.3+ is released.
+        try
+		{
+			code();
+			fail("Expected exception wasn't thrown!");
+			return null; // needed to compile
+		}
+		catch (e:Dynamic)
+		{
+			if (Std.is(e, expectedType))
+			{
+				return e;
+			}
+			else
+			{
+				Assert.fail('Expected exception of type ${Type.getClassName(expectedType)} but got ${Type.getClassName(Type.getClass(e))}: ${e}');
+				return null; // needed to compile
+			}
+		}
     }
 }
 
