@@ -62,15 +62,7 @@ class DictionaryTest
         var testKeyNotFoundDictionary = new Dictionary<Int,Int>();
         testKeyNotFoundDictionary.set(1, 1);
 
-        try
-        {
-            testKeyNotFoundDictionary.get(2);
-            Assert.fail("testKeyNotFoundDictionary.get(2) did not throw!");
-        }
-        catch (e:KeyNotFoundException)
-        {
-            //Pass
-        }
+        Assert.throws(KeyNotFoundException, (_) => testKeyNotFoundDictionary.get(2));
     }
 
     @Test
@@ -81,15 +73,7 @@ class DictionaryTest
         var testAdd = new Dictionary<Int,Int>();
         testAdd.add(key, value);
 
-        try
-        {
-            testAdd.add(key, value);
-            Assert.fail('2nd Dictionary.add(${key}, ${value}) did not throw!');
-        }
-        catch (e:ArgumentException)
-        {
-            //Pass
-        }
+        Assert.throws(ArgumentException, (_) => testAdd.add(key, value));
     }
 
     @Test
@@ -97,14 +81,7 @@ class DictionaryTest
     {
         var dictionary = new Dictionary<Int,Int>(); 
 
-        try
-        {
-            dictionary.set(null, 1);
-        }
-        catch (e:ArgumentNullException)
-        {
-            //Pass
-        }
+        Assert.throws(ArgumentNullException, (_) => dictionary.set(null, 1));
     }
 
     @Test
@@ -112,14 +89,7 @@ class DictionaryTest
     {
         var dictionary = new Dictionary<Int,Int>(); 
 
-        try
-        {
-            dictionary.get(null);
-        }
-        catch (e:ArgumentNullException)
-        {
-            //Pass
-        }
+        Assert.throws(ArgumentNullException, (_) => dictionary.get(null));
     }
 
     @Test
@@ -127,29 +97,14 @@ class DictionaryTest
     {
         var dictionary = new Dictionary<Int,Int>(); 
 
-        try
-        {
-            dictionary.containsKey(null);
-        }
-        catch (e:ArgumentNullException)
-        {
-            //Pass
-        }
+        Assert.throws(ArgumentNullException, (_) => dictionary.containsKey(null));
     }
 
     @Test
     public function removeThrowsArgumentNullExceptionOnNullKey()
     {
         var dictionary = new Dictionary<Int,Int>(); 
-
-        try
-        {
-            dictionary.remove(null);
-        }
-        catch (e:ArgumentNullException)
-        {
-            //Pass
-        }
+        Assert.throws(ArgumentNullException, (_) => dictionary.remove(null));
     }
 
     @Test
@@ -186,8 +141,8 @@ class DictionaryTest
         ]);
         var dictionary2 = dictionary; // shared reference (should also be cleared)
         dictionary.clear();
-        Assert.that(dictionary.count, Is.equalTo(0));
-        Assert.that(dictionary2.count, Is.equalTo(0));
+        Assert.that(dictionary.count(), Is.equalTo(0));
+        Assert.that(dictionary2.count(), Is.equalTo(0));
     }
 
     @Test
@@ -196,22 +151,22 @@ class DictionaryTest
         var dictionary = new Dictionary<Int,Int>();
 
         // dictionary starts empty
-        Assert.that(dictionary.count, Is.equalTo(0));
+        Assert.that(dictionary.count(), Is.equalTo(0));
 
         dictionary[1] = 1;
 
-        Assert.that(dictionary.count, Is.equalTo(1));
+        Assert.that(dictionary.count(), Is.equalTo(1));
 
         dictionary[1] = 2;
         // count is still 1
-        Assert.that(dictionary.count, Is.equalTo(1));
+        Assert.that(dictionary.count(), Is.equalTo(1));
         
         dictionary.remove(2);
         // count is still 1
-        Assert.that(dictionary.count, Is.equalTo(1));
+        Assert.that(dictionary.count(), Is.equalTo(1));
 
         dictionary.remove(1);
-        Assert.that(dictionary.count, Is.equalTo(0));
+        Assert.that(dictionary.count(), Is.equalTo(0));
     }
 
     private function testDictionaryGetSetAndRemove<K,V>(key:K, value:V, keyToNotFind:K)
@@ -226,6 +181,8 @@ class DictionaryTest
         Assert.that(testGetSetDictionary.get(key), Is.equalTo(value));
         // try to remove key that is present
         Assert.that(testGetSetDictionary.remove(key), Is.equalTo(true));
+        // the removed key should no longer exist in the Dictionary
+        Assert.that(testGetSetDictionary.containsKey(key), Is.equalTo(false));
 
         // test indexer get/set
         var testIndexerDictionary = new Dictionary<K,V>();

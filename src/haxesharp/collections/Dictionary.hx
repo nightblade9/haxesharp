@@ -9,14 +9,14 @@ import haxesharp.exceptions.KeyNotFoundException;
  * Represents a collection of keys and values.
  */
 @:forward(count)
-abstract Dictionary<K,V>(InternalDictionary<K,V>)
+abstract Dictionary<K,V>(BalancedTree<K,V>)
 {
     /**
     Constructs an empty Dictionary
     */
     inline public function new(?map:Map<K,V>)
     {
-        this = new InternalDictionary<K,V>();
+        this = new BalancedTree<K,V>();
 
         if (map != null)
         {
@@ -96,7 +96,9 @@ abstract Dictionary<K,V>(InternalDictionary<K,V>)
         for (existingValue in this)
         {
             if (existingValue == value)
+            {
                 return true;
+            }
         }
 
         return false;
@@ -108,8 +110,7 @@ abstract Dictionary<K,V>(InternalDictionary<K,V>)
     public function keys()
     {
         return [
-            for (key in this.keys())
-                key           
+            for (key in this.keys()) { key; }
         ];
     }
 
@@ -119,8 +120,7 @@ abstract Dictionary<K,V>(InternalDictionary<K,V>)
     public function values()
     {
         return [
-            for (value in this)
-                value
+            for (value in this) { value; }
         ];
     }
 
@@ -133,7 +133,23 @@ abstract Dictionary<K,V>(InternalDictionary<K,V>)
         var allKeys = keys();
 
         for (key in allKeys)
+        {
             remove(key);
+        }
+    }
+
+    /**
+    Returns the number of elements in the Dictionary
+    Note that this is an O(N) operation
+    */
+    public function count()
+    {
+        var count = 0;
+        for (value in this)
+        {
+            count++;
+        }
+        return count;
     }
 
     private inline function handleNullKey(key:K)
@@ -142,36 +158,5 @@ abstract Dictionary<K,V>(InternalDictionary<K,V>)
         {
             throw new ArgumentNullException("key was null");
         }
-    }
-}
-
-/**
-Extends BalancedTree to maintain an internal count of keys/values.
-Not intended to be used outside of HaxeSharp.
-**/
-class InternalDictionary<K,V> extends BalancedTree<K,V>
-{
-    public var count(default,null):Int;
-
-    public function new()
-    {
-        super();
-        count = 0;
-    }
-
-    public override function set(key:K, value:V)
-    {
-        // count only increases if the key doesn't currently exist
-        if (!exists(key))
-            count++;
-        super.set(key, value);
-    }
-
-    public override function remove(key:K)
-    {
-        var result = super.remove(key);
-        if (result)
-            count--;
-        return result;
     }
 }
