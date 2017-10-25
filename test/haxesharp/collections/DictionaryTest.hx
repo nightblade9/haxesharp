@@ -62,15 +62,7 @@ class DictionaryTest
         var testKeyNotFoundDictionary = new Dictionary<Int,Int>();
         testKeyNotFoundDictionary.set(1, 1);
 
-        try
-        {
-            testKeyNotFoundDictionary.get(2);
-            Assert.fail("testKeyNotFoundDictionary.get(2) did not throw!");
-        }
-        catch (e:KeyNotFoundException)
-        {
-            //Pass
-        }
+        Assert.throws(KeyNotFoundException, (_) => testKeyNotFoundDictionary.get(2));
     }
 
     @Test
@@ -81,15 +73,7 @@ class DictionaryTest
         var testAdd = new Dictionary<Int,Int>();
         testAdd.add(key, value);
 
-        try
-        {
-            testAdd.add(key, value);
-            Assert.fail('2nd Dictionary.add(${key}, ${value}) did not throw!');
-        }
-        catch (e:ArgumentException)
-        {
-            //Pass
-        }
+        Assert.throws(ArgumentException, (_) => testAdd.add(key, value));
     }
 
     @Test
@@ -97,14 +81,7 @@ class DictionaryTest
     {
         var dictionary = new Dictionary<Int,Int>(); 
 
-        try
-        {
-            dictionary.set(null, 1);
-        }
-        catch (e:ArgumentNullException)
-        {
-            //Pass
-        }
+        Assert.throws(ArgumentNullException, (_) => dictionary.set(null, 1));
     }
 
     @Test
@@ -112,14 +89,7 @@ class DictionaryTest
     {
         var dictionary = new Dictionary<Int,Int>(); 
 
-        try
-        {
-            dictionary.get(null);
-        }
-        catch (e:ArgumentNullException)
-        {
-            //Pass
-        }
+        Assert.throws(ArgumentNullException, (_) => dictionary.get(null));
     }
 
     @Test
@@ -127,29 +97,14 @@ class DictionaryTest
     {
         var dictionary = new Dictionary<Int,Int>(); 
 
-        try
-        {
-            dictionary.containsKey(null);
-        }
-        catch (e:ArgumentNullException)
-        {
-            //Pass
-        }
+        Assert.throws(ArgumentNullException, (_) => dictionary.containsKey(null));
     }
 
     @Test
     public function removeThrowsArgumentNullExceptionOnNullKey()
     {
         var dictionary = new Dictionary<Int,Int>(); 
-
-        try
-        {
-            dictionary.remove(null);
-        }
-        catch (e:ArgumentNullException)
-        {
-            //Pass
-        }
+        Assert.throws(ArgumentNullException, (_) => dictionary.remove(null));
     }
 
     @Test
