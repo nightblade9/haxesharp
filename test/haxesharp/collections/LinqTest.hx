@@ -2,6 +2,7 @@ package haxesharp.collections;
 
 using haxesharp.collections.Linq;
 using haxesharp.exceptions.InvalidOperationException;
+using haxesharp.exceptions.ArgumentNullException;
 using haxesharp.test.Assert;
 using haxesharp.text.StringExtensions;
 
@@ -47,6 +48,55 @@ class LinqTest
         var a = ["bell pepper", "tomato", "mushroom"];
         var actual = a.first((f) => f.contains("x"));
         Assert.that(actual, Is.equalTo(null));
+    }
+
+    @Test
+    public function singleThrowsIfArrayIsNull()
+    {
+        Assert.throws(ArgumentNullException, (_) => Linq.single(null));
+        Assert.throws(ArgumentNullException, (_) => Linq.single(null, (x) => true));
+    }
+
+    @Test
+    public function singleWithoutPredicateThrowsIfArrayIsEmpty()
+    {
+        Assert.throws(InvalidOperationException, (_) => [].single());
+    }
+
+    @Test
+    public function singleWithoutPredicateThrowsIfArrayContainsMultipleElements()
+    {
+        Assert.throws(InvalidOperationException, (_) => [1,2,3].single());
+    }
+
+    @Test
+    public function singleWithoutPredicateReturnsTheElementInASingleElementArray()
+    {
+        Assert.that([1].single(), Is.equalTo(1));
+    }
+
+    @Test
+    public function singleWithPredicateThrowsIfArrayIsEmpty()
+    {
+        Assert.throws(InvalidOperationException, (_) => [].single((x) => true));
+    }
+
+    @Test
+    public function singleWithPredicateThrowsIfNoElementSatisfiesPredicate()
+    {
+        Assert.throws(InvalidOperationException, (_) => [1,2,3].single((x) => x == 4));
+    }
+
+    @Test
+    public function singleWithPredicateThrowsIfMultipleElementsSatisfyPredicate()
+    {
+        Assert.throws(InvalidOperationException, (_) => [1,2,3,2].single((x) => x == 2));
+    }
+
+    @Test
+    public function singleWithPredicateReturnsTheElementIfOnlyOneElementSatisfiesPredicate()
+    {
+        Assert.that([1,2,3].single((x) => x == 3), Is.equalTo(3));
     }
 
     @Test
