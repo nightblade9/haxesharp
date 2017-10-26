@@ -38,7 +38,7 @@ abstract Dictionary<K,V>(BalancedTree<K,V>)
 
         if (!containsKey(key))
         {
-            throw new KeyNotFoundException("The given key was not present in the Dictionary");
+            throw new KeyNotFoundException('The given key (${key}) was not present in the Dictionary.');
         }
 
         return this.get(key);

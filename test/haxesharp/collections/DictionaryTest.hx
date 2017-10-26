@@ -169,6 +169,26 @@ class DictionaryTest
         Assert.that(dictionary.count(), Is.equalTo(0));
     }
 
+    @Test
+    public function getGetsValuesSetWithObjectsAsKeys()
+    {
+        var m1 = new Monster(7);
+        var m2 = new Monster(3);
+        var m3 = new Monster(3);
+        var m4 = new Monster(3);
+
+        var dictionary = new Dictionary<Monster, Int>();
+        dictionary[m1] = 0;
+        dictionary[m2] = 0;
+        dictionary[m3] = 0;
+        dictionary[m4] = 0;
+        
+        Assert.that(dictionary[m1], Is.equalTo(0));
+        Assert.that(dictionary[m2], Is.equalTo(0));
+        Assert.that(dictionary[m3], Is.equalTo(0));
+        Assert.that(dictionary[m4], Is.equalTo(0));
+    }
+
     private function testDictionaryGetSetAndRemove<K,V>(key:K, value:V, keyToNotFind:K)
     {
         // test get/set and remove
@@ -207,4 +227,14 @@ enum TestEnum
 class TestObject
 {
     public function new() { }
+}
+
+class Monster
+{
+    private var value:Int;
+
+    public function new(value:Int)
+    {
+        this.value = value;
+    }
 }

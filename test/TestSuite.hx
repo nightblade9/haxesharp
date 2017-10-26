@@ -3,6 +3,7 @@ import massive.munit.TestSuite;
 import haxesharp.text.StringExtensionsTest;
 import haxesharp.text.RegexTest;
 import haxesharp.collections.LinqTest;
+import haxesharp.collections.DictionaryTest;
 import haxesharp.random.RandomTest;
 import haxesharp.test.AssertTest;
 
@@ -21,6 +22,7 @@ class TestSuite extends massive.munit.TestSuite
 		add(haxesharp.text.StringExtensionsTest);
 		add(haxesharp.text.RegexTest);
 		add(haxesharp.collections.LinqTest);
+		add(haxesharp.collections.DictionaryTest);
 		add(haxesharp.random.RandomTest);
 		add(haxesharp.test.AssertTest);
 	}
