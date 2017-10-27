@@ -1,10 +1,11 @@
 package haxesharp.collections;
 
 import haxesharp.exceptions.ArgumentException;
+import haxesharp.exceptions.ArgumentNullException;
 import haxesharp.exceptions.KeyNotFoundException;
 import haxesharp.exceptions.InvalidOperationException;
 
-abstract Dictionary<K,V>(haxe.Constraints.IMap<K, V>)
+class Dictionary<K,V>
 {
     // Only one of these is used at any given type (depends what K is).
     // We use reflection to determine the type at runtime.
@@ -25,7 +26,7 @@ abstract Dictionary<K,V>(haxe.Constraints.IMap<K, V>)
     /**
     Constructs an empty Dictionary
     */
-    inline public function new(?map:Map<K,V>)
+    inline public function new(?map:Map<K,V> = null)
     {
         if (map != null)
         {
@@ -40,10 +41,14 @@ abstract Dictionary<K,V>(haxe.Constraints.IMap<K, V>)
     Returns the value for the given key.
     If the key is not found, a KeyNotFoundException is thrown.
     */
-    @:arrayAccess
     public function get(key:K):V
     {
         var keyType = definitivelyDetermineType(key);
+
+        if (!this.containsKey(key))
+        {
+            throw new KeyNotFoundException('The given key (${key}) was not present in the Dictionary.');
+        }
 
         if (keyType == InternalKeyType.Integer)
         {
@@ -75,37 +80,34 @@ abstract Dictionary<K,V>(haxe.Constraints.IMap<K, V>)
     Sets the given key with the given value.
     If the key already exists, the existing value is overwritten.
     */
-    @:arrayAccess
-    public function set(key:K, value:V)
+    public function set(key:K, value:V):Void
     {
         var keyType = definitivelyDetermineType(key);
         
         if (keyType == InternalKeyType.Integer)
         {
             var intK:Int = cast key;
-            return ints.get(intK);
+            ints.set(intK, value);
         }
         else if (keyType == InternalKeyType.Enum)
         {
             var enumK:EnumValue = cast key;
-            return enums.get(enumK);
+            enums.set(enumK, value);
         }
         else if (keyType == InternalKeyType.String)
         {
             var stringK:String = cast key;
-            return strings.get(stringK);
+            strings.set(stringK, value);
         }
         else if (keyType == InternalKeyType.Object)
         {
             var constrainedK:{} = cast key;
-            return objects.get(constrainedK);
+            objects.set(constrainedK, value);
         }
         else
         {
             throw new InvalidOperationException('Invalid key type: ${keyType}');
         }
-
-        // return value;
     }
 
     /**
@@ -114,12 +116,12 @@ abstract Dictionary<K,V>(haxe.Constraints.IMap<K, V>)
     */
     public function add(key:K, value:V)
     {
-        if (containsKey(key))
+        if (this.containsKey(key))
         {
             throw new ArgumentException('The key "${key}" is already present in the Dictionary');
         }
 
-        set(key, value);
+        this.set(key, value);
     }
 
     /**
@@ -127,8 +129,32 @@ abstract Dictionary<K,V>(haxe.Constraints.IMap<K, V>)
     */
     public function remove(key:K):Bool
     {
-        definitivelyDetermineType(key);
-        return this.remove(key);
+        var keyType = definitivelyDetermineType(key);
+        
+        if (keyType == InternalKeyType.Integer)
+        {
+            var intK:Int = cast key;
+            return ints.remove(intK);
+        }
+        else if (keyType == InternalKeyType.Enum)
+        {
+            var enumK:EnumValue = cast key;
+            return enums.remove(enumK);
+        }
+        else if (keyType == InternalKeyType.String)
+        {
+            var stringK:String = cast key;
+            return strings.remove(stringK);
+        }
+        else if (keyType == InternalKeyType.Object)
+        {
+            var constrainedK:{} = cast key;
+            return objects.remove(constrainedK);
+        }
+        else
+        {
+            throw new InvalidOperationException('Invalid key type: ${keyType}');
+        }
     }
 
     /**
@@ -238,7 +264,7 @@ abstract Dictionary<K,V>(haxe.Constraints.IMap<K, V>)
 
         for (key in allKeys)
         {
-            remove(key);
+            this.remove(key);
         }
     }
 
@@ -261,9 +287,9 @@ abstract Dictionary<K,V>(haxe.Constraints.IMap<K, V>)
     **/
     private inline function definitivelyDetermineType(key:K):InternalKeyType
     {
-        if (!this.containsKey(key))
+        if (key == null)
         {
-            throw new KeyNotFoundException('The given key (${key}) was not present in the Dictionary.');
+            throw new ArgumentNullException("key");
         }
 
         var typeOf = Type.typeof(key).getName();
