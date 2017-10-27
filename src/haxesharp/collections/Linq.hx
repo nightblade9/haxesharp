@@ -3,6 +3,7 @@ package haxesharp.collections;
 using haxesharp.collections.Linq;
 import haxesharp.random.Random;
 import haxesharp.exceptions.InvalidOperationException;
+import haxesharp.exceptions.ArgumentNullException;
 
 /**
  *  LINQ-like extensions for arrays. To use, add: using haxesharp.collections.Linq;
@@ -54,6 +55,60 @@ class Linq<T>
             }
 
             return null;
+        }
+    }
+
+    /**
+    If a predicate is supplied, returns the only element to satisfy the predicate.  Throws an exception if more than one such element exists.
+    If a predicate is not supplied, return the only element in the array.  Throws an exception if the array contains more than one element.
+    In both cases, and exception is thrown if the provided array is null.
+    */
+    public static function single<T>(array:Array<T>, ?predicate:T->Bool):T
+    {
+        if (array == null)
+        {
+            throw new ArgumentNullException('"array" argument cannot be null.');
+        }
+
+        if (predicate == null)
+        {
+            if (array.length == 1)
+            {
+                return array[0];
+            }
+            else if (array.length == 0)
+            {
+                throw new InvalidOperationException('"array" length cannot be 0.');
+            }
+            else
+            {
+                throw new InvalidOperationException('"array" length cannot be greater than 1.');                
+            }
+        }
+        else
+        {
+            var found:T = null;
+            for (a in array)
+            {
+                if (predicate(a))
+                {
+                    if (found == null)
+                    {
+                        found = a;
+                    }
+                    else
+                    {
+                        throw new InvalidOperationException('More than one element satisfies the condition in predicate.');
+                    }
+                }
+            }
+
+            if (found == null)
+            {
+                throw new InvalidOperationException('No element satisfies the condition in predicate.');
+            }
+
+            return found;
         }
     }
 
