@@ -84,6 +84,6 @@ We welcome contributions from the community. If you would like to make a large c
 
 - Any changes must include sufficient unit tests
 - To test your changes, run `haxelib run munit test` from the root of the repository
-- Please add [`dox`](https://github.com/HaxeFlixel/dox) markup to your classes so they are reasonably well explained in the API documentation
+- Please add [`dox`](https://github.com/HaxeFoundation/dox) markup to your classes so they are reasonably well explained in the API documentation
 
 We use Travis-CI for continuous integration. If you check in something that breaks the build, please take responsibility to investigate and resolve the build failure. (You can find the Travis link at the top of this README.)
