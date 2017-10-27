@@ -1,9 +1,9 @@
 package haxesharp.collections;
 
 using haxesharp.collections.Linq;
-import haxesharp.random.Random;
 import haxesharp.exceptions.InvalidOperationException;
 import haxesharp.exceptions.ArgumentNullException;
+import haxesharp.random.Random;
 
 /**
  *  LINQ-like extensions for arrays. To use, add: using haxesharp.collections.Linq;
@@ -22,7 +22,11 @@ class Linq<T>
         }
         else
         {
-            return array.where((object) => predicate(object) == true).length > 0;
+            var matchingObjects = array.where(function(object)
+            {
+                return predicate(object) == true;
+            });
+            return matchingObjects.length > 0;
         }
     }
     

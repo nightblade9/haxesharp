@@ -5,6 +5,7 @@ using haxesharp.test.Assert;
 using haxesharp.exceptions.ArgumentException;
 using haxesharp.exceptions.ArgumentNullException;
 using haxesharp.exceptions.KeyNotFoundException;
+using haxesharp.exceptions.InvalidOperationException;
 
 class DictionaryTest
 {
@@ -187,6 +188,13 @@ class DictionaryTest
         Assert.that(dictionary.get(m2), Is.equalTo(0));
         Assert.that(dictionary.get(m3), Is.equalTo(0));
         Assert.that(dictionary.get(m4), Is.equalTo(0));
+    }
+
+    @Test
+    public function setThrowsIfKeyIsFloat()
+    {
+        var dictionary = new Dictionary<Float, String>();
+        Assert.throws(InvalidOperationException, (_) => dictionary.set(1.234, "Fail"));
     }
 
     private function testDictionaryGetSetAndRemove<K,V>(key:K, value:V, keyToNotFind:K)

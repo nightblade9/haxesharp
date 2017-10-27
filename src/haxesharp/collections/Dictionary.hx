@@ -5,7 +5,37 @@ import haxesharp.exceptions.ArgumentNullException;
 import haxesharp.exceptions.KeyNotFoundException;
 import haxesharp.exceptions.InvalidOperationException;
 
-class Dictionary<K,V>
+// Ensures all the fields of the concrete class can be accessed from the abstract
+@:forward
+/**
+A dictionary class that can accept arbitrary keys.
+Uses efficient storage (`IntMap`, etc.) internally depending on the key type.
+**/
+abstract Dictionary<K,V>(AbstractDictionary<K,V>)
+{
+    inline public function new(?map:Map<K,V>)
+    {
+        this = new AbstractDictionary<K,V>(map);
+    }
+
+    @:arrayAccess
+    inline public function setValue(key:K, val:V)
+    {
+        this.set(key, val);
+        return val;
+    }
+
+    @:arrayAccess
+    inline public function getValue(key:K)
+    {
+        return this.get(key);
+    }
+}
+
+/**
+An internal dictionary type. Required for `Dictionary` to have array accessors.
+**/
+class AbstractDictionary<K,V>
 {
     // Only one of these is used at any given type (depends what K is).
     // We use reflection to determine the type at runtime.
@@ -24,7 +54,7 @@ class Dictionary<K,V>
     private var objects = new haxe.ds.ObjectMap<{}, V>();
 
     /**
-    Constructs an empty Dictionary
+    Constructs an empty Dictionary.
     */
     inline public function new(?map:Map<K,V> = null)
     {
@@ -125,7 +155,8 @@ class Dictionary<K,V>
     }
 
     /**
-    If the key is in the Dictionary, removes it and returns true, otherwise returns false. 
+    If the key is in the Dictionary, removes it and returns true; otherwise,
+    returns false. 
     */
     public function remove(key:K):Bool
     {
@@ -158,7 +189,7 @@ class Dictionary<K,V>
     }
 
     /**
-    Returns true if the Dictionary contains the given key, otherwise returns false.
+    Returns true if the Dictionary contains the given key; otherwise, returns false.
     */
     public function containsKey(key:K):Bool
     {
@@ -191,7 +222,7 @@ class Dictionary<K,V>
     }
 
     /**
-    Returns true if the Dictionary contains the given value, otherwise returns false.
+    Returns true if the Dictionary contains the given value; otherwise returns false.
     */
     public function containsValue(value:V):Bool
     {
