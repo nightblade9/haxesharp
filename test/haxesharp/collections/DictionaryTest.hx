@@ -212,6 +212,12 @@ class DictionaryTest
         
         // the removed key should no longer exist in the Dictionary
         Assert.that(dictionary.containsKey(key), Is.equalTo(false));
+
+        // test indexer get/set
+        var testIndexerDictionary = new Dictionary<K,V>();
+        testIndexerDictionary[key] = value; // allows for indexer access
+
+        Assert.that(testIndexerDictionary[key], Is.equalTo(value));
     }
 }
 
