@@ -5,6 +5,7 @@ using haxesharp.test.Assert;
 using haxesharp.exceptions.ArgumentException;
 using haxesharp.exceptions.ArgumentNullException;
 using haxesharp.exceptions.KeyNotFoundException;
+using haxesharp.exceptions.InvalidOperationException;
 
 class DictionaryTest
 {
@@ -12,7 +13,7 @@ class DictionaryTest
     public function dictionaryAllowsIntKeys()
     {
         testDictionaryGetSetAndRemove(1, 1, 7);
-        testDictionaryMapConstructor([
+        new Dictionary([
             1 => 1,
             2 => 2,
             3 => 3
@@ -23,7 +24,7 @@ class DictionaryTest
     public function dictionaryAllowsStringKeys()
     {
         testDictionaryGetSetAndRemove("foo", "bar", "key that doesn't exist");
-        testDictionaryMapConstructor([
+        new Dictionary([
             "1" => 1,
             "2" => 2,
             "3" => 3
@@ -34,7 +35,7 @@ class DictionaryTest
     public function dictionaryAllowsEnumValueKeys()
     {
         testDictionaryGetSetAndRemove(TestEnum.OneValue, 1, TestEnum.TwoValue);
-        testDictionaryMapConstructor([
+        new Dictionary([
             TestEnum.OneValue => 1,
             TestEnum.TwoValue => 2,
             TestEnum.ThreeValue => 3
@@ -49,7 +50,7 @@ class DictionaryTest
         var obj1 = new TestObject();
         var obj2 = new TestObject();
         var obj3 = new TestObject();
-        testDictionaryMapConstructor([
+        new Dictionary([
             obj1 => 1,
             obj2 => 2,
             obj3 => 3
@@ -148,16 +149,16 @@ class DictionaryTest
     @Test
     public function dictionaryCountIsAccurate()
     {
-        var dictionary = new Dictionary<Int,Int>();
+        var dictionary = new Dictionary<Int, String>();
 
         // dictionary starts empty
         Assert.that(dictionary.count(), Is.equalTo(0));
 
-        dictionary[1] = 1;
+        dictionary.set(1, "one");
 
         Assert.that(dictionary.count(), Is.equalTo(1));
 
-        dictionary[1] = 2;
+        dictionary.set(1, "two");
         // count is still 1
         Assert.that(dictionary.count(), Is.equalTo(1));
         
@@ -169,31 +170,54 @@ class DictionaryTest
         Assert.that(dictionary.count(), Is.equalTo(0));
     }
 
+    @Test
+    public function getGetsIdenticalValuesSetWithObjectsAsKeys()
+    {
+        var m1 = new Monster(7);
+        var m2 = new Monster(3);
+        var m3 = new Monster(3);
+        var m4 = new Monster(3);
+
+        var dictionary = new Dictionary<Monster, Int>();
+        dictionary.set(m1, 0);
+        dictionary.set(m2, 0);
+        dictionary.set(m3, 0);
+        dictionary.set(m4, 0);
+        
+        Assert.that(dictionary.get(m1), Is.equalTo(0));
+        Assert.that(dictionary.get(m2), Is.equalTo(0));
+        Assert.that(dictionary.get(m3), Is.equalTo(0));
+        Assert.that(dictionary.get(m4), Is.equalTo(0));
+    }
+
+    @Test
+    public function setThrowsIfKeyIsFloat()
+    {
+        var dictionary = new Dictionary<Float, String>();
+        Assert.throws(InvalidOperationException, (_) => dictionary.set(1.234, "Fail"));
+    }
+
     private function testDictionaryGetSetAndRemove<K,V>(key:K, value:V, keyToNotFind:K)
     {
         // test get/set and remove
-        var testGetSetDictionary = new Dictionary<K,V>();
-        testGetSetDictionary.set(key, value);
+        var dictionary = new Dictionary<K,V>();
+        dictionary.set(key, value);
 
         // try to remove key that isn't present
-        Assert.that(testGetSetDictionary.remove(keyToNotFind), Is.equalTo(false));
+        Assert.that(dictionary.remove(keyToNotFind), Is.equalTo(false));
         
-        Assert.that(testGetSetDictionary.get(key), Is.equalTo(value));
+        Assert.that(dictionary.get(key), Is.equalTo(value));
         // try to remove key that is present
-        Assert.that(testGetSetDictionary.remove(key), Is.equalTo(true));
+        Assert.that(dictionary.remove(key), Is.equalTo(true));
+        
         // the removed key should no longer exist in the Dictionary
-        Assert.that(testGetSetDictionary.containsKey(key), Is.equalTo(false));
+        Assert.that(dictionary.containsKey(key), Is.equalTo(false));
 
         // test indexer get/set
         var testIndexerDictionary = new Dictionary<K,V>();
         testIndexerDictionary[key] = value; // allows for indexer access
 
         Assert.that(testIndexerDictionary[key], Is.equalTo(value));
-    }
-
-    private function testDictionaryMapConstructor<K,V>(map:Map<K,V>)
-    {
-        new Dictionary(map);
     }
 }
 
@@ -207,4 +231,14 @@ enum TestEnum
 class TestObject
 {
     public function new() { }
+}
+
+class Monster
+{
+    private var value:Int;
+
+    public function new(value:Int)
+    {
+        this.value = value;
+    }
 }
