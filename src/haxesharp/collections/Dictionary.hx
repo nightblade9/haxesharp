@@ -1,5 +1,7 @@
 package haxesharp.collections;
 
+import haxesharp.collections.dictionarystrategy.DictionaryStrategyFactory;
+import haxesharp.collections.dictionarystrategy.IDictionaryStrategy;
 import haxesharp.exceptions.ArgumentException;
 import haxesharp.exceptions.ArgumentNullException;
 import haxesharp.exceptions.KeyNotFoundException;
@@ -37,21 +39,7 @@ An internal dictionary type. Required for `Dictionary` to have array accessors.
 **/
 class AbstractDictionary<K,V>
 {
-    // Only one of these is used at any given type (depends what K is).
-    // We use reflection to determine the type at runtime.
-    // We can't determine at compile time, and there's no way
-    // to inspect the K type in the constructor, so we're stuck
-    // keeping four instances.
-    //
-    // We also can't easily keep state, i.e. note down somewhere that
-    // the key type we're using is X, until we actually get/set a key.
-    // There may be some optimization here (eg. keep the key type name
-    // as null and set it on first get/set to avoid having to re-check
-    // the key types with reflection on every get/set operation).
-    private var ints = new haxe.ds.IntMap<V>();
-    private var enums = new haxe.ds.EnumValueMap<EnumValue, V>();
-    private var strings = new haxe.ds.StringMap<V>();
-    private var objects = new haxe.ds.ObjectMap<{}, V>();
+    private var strategy:IDictionaryStrategy<K, V>;
 
     /**
     Constructs an empty Dictionary.
@@ -73,37 +61,14 @@ class AbstractDictionary<K,V>
     */
     public function get(key:K):V
     {
-        var keyType = definitivelyDetermineType(key);
+        this.initializeStrategy(key);
 
         if (!this.containsKey(key))
         {
             throw new KeyNotFoundException('The given key (${key}) was not present in the Dictionary.');
         }
 
-        if (keyType == InternalKeyType.Integer)
-        {
-            var intK:Int = cast key;
-            return ints.get(intK);
-        }
-        else if (keyType == InternalKeyType.Enum)
-        {
-            var enumK:EnumValue = cast key;
-            return enums.get(enumK);
-        }
-        else if (keyType == InternalKeyType.String)
-        {
-            var stringK:String = cast key;
-            return strings.get(stringK);
-        }
-        else if (keyType == InternalKeyType.Object)
-        {
-            var constrainedK:{} = cast key;
-            return objects.get(constrainedK);
-        }
-        else
-        {
-            throw new InvalidOperationException('Invalid key type: ${keyType}');
-        }
+        return this.strategy.get(key);
     }
 
     /**
@@ -112,32 +77,8 @@ class AbstractDictionary<K,V>
     */
     public function set(key:K, value:V):Void
     {
-        var keyType = definitivelyDetermineType(key);
-        
-        if (keyType == InternalKeyType.Integer)
-        {
-            var intK:Int = cast key;
-            ints.set(intK, value);
-        }
-        else if (keyType == InternalKeyType.Enum)
-        {
-            var enumK:EnumValue = cast key;
-            enums.set(enumK, value);
-        }
-        else if (keyType == InternalKeyType.String)
-        {
-            var stringK:String = cast key;
-            strings.set(stringK, value);
-        }
-        else if (keyType == InternalKeyType.Object)
-        {
-            var constrainedK:{} = cast key;
-            objects.set(constrainedK, value);
-        }
-        else
-        {
-            throw new InvalidOperationException('Invalid key type: ${keyType}');
-        }
+        this.initializeStrategy(key);
+        return this.strategy.set(key, value);
     }
 
     /**
@@ -160,32 +101,8 @@ class AbstractDictionary<K,V>
     */
     public function remove(key:K):Bool
     {
-        var keyType = definitivelyDetermineType(key);
-        
-        if (keyType == InternalKeyType.Integer)
-        {
-            var intK:Int = cast key;
-            return ints.remove(intK);
-        }
-        else if (keyType == InternalKeyType.Enum)
-        {
-            var enumK:EnumValue = cast key;
-            return enums.remove(enumK);
-        }
-        else if (keyType == InternalKeyType.String)
-        {
-            var stringK:String = cast key;
-            return strings.remove(stringK);
-        }
-        else if (keyType == InternalKeyType.Object)
-        {
-            var constrainedK:{} = cast key;
-            return objects.remove(constrainedK);
-        }
-        else
-        {
-            throw new InvalidOperationException('Invalid key type: ${keyType}');
-        }
+        this.initializeStrategy(key);
+        return this.strategy.remove(key);
     }
 
     /**
@@ -193,32 +110,8 @@ class AbstractDictionary<K,V>
     */
     public function containsKey(key:K):Bool
     {
-        var keyType = this.definitivelyDetermineType(key);
-        
-        if (keyType == InternalKeyType.Integer)
-        {
-            var intK:Int = cast key;
-            return ints.exists(intK);
-        }
-        else if (keyType == InternalKeyType.Enum)
-        {
-            var enumK:EnumValue = cast key;
-            return enums.exists(enumK);
-        }
-        else if (keyType == InternalKeyType.String)
-        {
-            var stringK:String = cast key;
-            return strings.exists(stringK);
-        }
-        else if (keyType == InternalKeyType.Object)
-        {
-            var constrainedK:{} = cast key;
-            return objects.exists(constrainedK);
-        }
-        else
-        {
-            throw new InvalidOperationException('Invalid key type: ${keyType}');
-        }
+        this.initializeStrategy(key);
+        return this.strategy.containsKey(key);
     }
 
     /**
@@ -226,14 +119,19 @@ class AbstractDictionary<K,V>
     */
     public function containsValue(value:V):Bool
     {
-       for (key in this.keys())
-       {
-           var v = this.get(key);
-           if (v == value)
-           {
-               return true;
-           }
-       }
+        if (this.strategy == null)
+        {
+            return false;
+        }
+
+        for (key in this.keys())
+        {
+            var v = this.get(key);
+            if (v == value)
+            {
+                return true;
+            }
+        }
 
         return false;
     }
@@ -241,40 +139,26 @@ class AbstractDictionary<K,V>
     /**
     Returns an Array of all the keys in the Dictionary
     */
-    public function keys()
+    public function keys():Array<K>
     {
-        // Can't rely on one of these being null or empty to know if
-        // we're actually using that internal dictionary (because we
-        // don't know at constructor runtime what K really is).
-        // This is hideous, but should work if we only ever use one of
-        // these internal dictionaries at a time, ever.
-        var toReturn = new Array<Any>();
-
-        for (i in this.ints.keys())
+        if (this.strategy == null)
         {
-            toReturn.push(i);
-        }
-        for (s in this.strings.keys())
-        {
-            toReturn.push(s);
-        }
-        for (e in this.enums.keys())
-        {
-            toReturn.push(e);
-        }
-        for (o in this.objects.keys())
-        {
-            toReturn.push(o);
+           return new Array<K>();
         }
 
-        return toReturn;
+        return this.strategy.keys();
     }
 
     /**
     Returns an Array of all the values in the Dictionary
     */
-    public function values()
+    public function values():Array<V>
     {
+        if (this.strategy == null)
+        {
+            return new Array<V>();
+        }
+
         var toReturn = new Array<V>();
 
         for (key in this.keys())
@@ -290,12 +174,15 @@ class AbstractDictionary<K,V>
     */
     public function clear()
     {
-        // can't remove from Dictionary while iterating through keys, so retrieve list of all keys here first
-        var allKeys = keys();
-
-        for (key in allKeys)
+        if (this.strategy != null)
         {
-            this.remove(key);
+            // can't remove from Dictionary while iterating through keys, so retrieve list of all keys here first
+            var allKeys = keys();
+
+            for (key in allKeys)
+            {
+                this.remove(key);
+            }
         }
     }
 
@@ -305,7 +192,21 @@ class AbstractDictionary<K,V>
     */
     public function count()
     {
+        if (this.strategy == null)
+        {
+            return 0;
+        }
+
         return this.keys().length;
+    }
+
+    private function initializeStrategy(key:K):Void
+    {
+        if (this.strategy == null)
+        {
+            var typeOf = this.definitivelyDetermineType(key);
+            this.strategy = DictionaryStrategyFactory.create(typeOf);
+        }
     }
 
     /**
