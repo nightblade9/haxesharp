@@ -11,6 +11,7 @@ class ObjectKeyDictionaryStrategy<K, V> implements IDictionaryStrategy<K, V>
     {
         this.data = new ObjectMap<{}, V>();        
     }
+    
     public function get(key:K):V
     {
         var castKey:{} = cast key;

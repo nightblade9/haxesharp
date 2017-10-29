@@ -11,6 +11,7 @@ class EnumKeyDictionaryStrategy<K, V> implements IDictionaryStrategy<K, V>
     {
         this.data = new EnumValueMap<EnumValue, V>();
     }
+    
     public function get(key:K):V
     {
         var castKey:EnumValue = cast key;
