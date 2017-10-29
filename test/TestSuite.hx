@@ -1,5 +1,6 @@
 import massive.munit.TestSuite;
 
+import haxesharp.collections.dictionarystrategy.DictionaryStrategyFactoryTest;
 import haxesharp.collections.DictionaryTest;
 import haxesharp.collections.LinqTest;
 import haxesharp.random.RandomTest;
@@ -19,6 +20,7 @@ class TestSuite extends massive.munit.TestSuite
 	{
 		super();
 
+		add(haxesharp.collections.dictionarystrategy.DictionaryStrategyFactoryTest);
 		add(haxesharp.collections.DictionaryTest);
 		add(haxesharp.collections.LinqTest);
 		add(haxesharp.random.RandomTest);
