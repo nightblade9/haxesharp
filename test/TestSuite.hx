@@ -2,6 +2,9 @@ import massive.munit.TestSuite;
 
 import haxesharp.collections.dictionarystrategy.DictionaryStrategyFactoryTest;
 import haxesharp.collections.dictionarystrategy.EnumKeyDictionaryStrategyTest;
+import haxesharp.collections.dictionarystrategy.IntegerKeyDictionaryStrategyTest;
+import haxesharp.collections.dictionarystrategy.ObjectKeyDictionaryStrategyTest;
+import haxesharp.collections.dictionarystrategy.StringKeyDictionaryStrategyTest;
 import haxesharp.collections.DictionaryTest;
 import haxesharp.collections.LinqTest;
 import haxesharp.random.RandomTest;
@@ -23,6 +26,9 @@ class TestSuite extends massive.munit.TestSuite
 
 		add(haxesharp.collections.dictionarystrategy.DictionaryStrategyFactoryTest);
 		add(haxesharp.collections.dictionarystrategy.EnumKeyDictionaryStrategyTest);
+		add(haxesharp.collections.dictionarystrategy.IntegerKeyDictionaryStrategyTest);
+		add(haxesharp.collections.dictionarystrategy.ObjectKeyDictionaryStrategyTest);
+		add(haxesharp.collections.dictionarystrategy.StringKeyDictionaryStrategyTest);
 		add(haxesharp.collections.DictionaryTest);
 		add(haxesharp.collections.LinqTest);
 		add(haxesharp.random.RandomTest);

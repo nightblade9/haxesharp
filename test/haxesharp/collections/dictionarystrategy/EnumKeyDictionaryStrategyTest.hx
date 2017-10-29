@@ -64,8 +64,9 @@ class EnumKeyDictionaryStrategyTest
         var d = new EnumKeyDictionaryStrategy();
         d.set(Vegetables.Celery, "Celery");
         d.set(Vegetables.Turnip, "Tasty");
+        
         var actual = d.keys();
-
+        Assert.that(actual.length, Is.equalTo(2));
         Assert.that(actual.contains(Vegetables.Celery));
         Assert.that(actual.contains(Vegetables.Turnip));
         Assert.that(actual.contains(Vegetables.Carrot), Is.equalTo(false));
