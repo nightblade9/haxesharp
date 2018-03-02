@@ -9,7 +9,7 @@ using haxesharp.text.StringExtensions;
 class LinqTest
 {
     @Test
-    public function addAddsElement()
+    public function addAddsElementToEndOfArray()
     {
         var array = ["one"];
         array.add("two");
@@ -19,6 +19,9 @@ class LinqTest
         Assert.that(array.length, Is.equalTo(4));
         Assert.that(array.contains("two"));
         Assert.that(array.contains("three"));
+
+        Assert.that(array.indexOf("two"), Is.equalTo(1));
+        Assert.that(array.indexOf("three"), Is.equalTo(2));
     }
 
     @Test
