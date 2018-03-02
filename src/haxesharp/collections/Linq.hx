@@ -11,6 +11,15 @@ import haxesharp.random.Random;
 class Linq<T>
 {
     /**
+     *  For convenience.
+     */
+    
+    public static function add<T>(array:Array<T>, item:T):Void
+    {
+        array.push(item);
+    }
+
+    /**
     Returns true if there are any elements that match the predicate.
     If you pass in a null predicate, checks if there are any elements in the array.
     */
@@ -36,6 +45,24 @@ class Linq<T>
     public static function contains<T>(array:Array<T>, object:T):Bool
     {
         return array.indexOf(object) > -1;
+    }
+
+    /**
+     *  Returns all the unique elements in the array. Uses indexOf/contains under the hood
+     *  to check for object equality.
+     */
+    public static function distinct<T>(array:Array<T>):Array<T>
+    {
+        var toReturn = new Array<T>();
+        for (item in array)
+        {
+            if (!toReturn.contains(item))
+            {
+                toReturn.add(item);
+            }
+        }
+
+        return toReturn;
     }
 
     /**
@@ -132,7 +159,7 @@ class Linq<T>
         var toReturn = new Array<T>();
         while (toReturn.length != array.length)
         {
-            toReturn.push(array[toReturn.length]);
+            toReturn.add(array[toReturn.length]);
         }
 
         // Shuffle
@@ -168,7 +195,7 @@ class Linq<T>
             var toReturn = new Array<T>();
             for (i in 0 ... n)
             {
-                toReturn.push(array[i]);
+                toReturn.add(array[i]);
             }
             return toReturn;
         }        
@@ -186,7 +213,7 @@ class Linq<T>
         {
             if (predicate(item) == true)
             {
-                toReturn.push(item);
+                toReturn.add(item);
             }
         }
 
