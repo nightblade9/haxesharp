@@ -9,12 +9,49 @@ using haxesharp.text.StringExtensions;
 class LinqTest
 {
     @Test
+    public function addAddsElementToEndOfArray()
+    {
+        var array = ["one"];
+        array.add("two");
+        array.add("three");
+        array.add("one"); // duplicates. no worries.
+
+        Assert.that(array.length, Is.equalTo(4));
+        Assert.that(array.contains("two"));
+        Assert.that(array.contains("three"));
+
+        Assert.that(array.indexOf("two"), Is.equalTo(1));
+        Assert.that(array.indexOf("three"), Is.equalTo(2));
+    }
+
+    @Test
     public function containsReturnsTrueOrFalseAppropriately()
     {
         var array = ["cat", "dog", "mouse"];
         Assert.that(array.contains("cat"), Is.equalTo(true));
         Assert.that(array.contains("CAT"), Is.equalTo(false)); // not equal strings
         Assert.that(array.contains("hare"), Is.equalTo(false));
+    }
+
+    @Test
+    public function distinctReturnsUniqueItemsByValueForPrimitiveTypes()
+    {
+        var array = ["tomato", "carrot", "tomato", "celery", "carrot"];
+        var actual = array.distinct();
+        Assert.that(actual.length, Is.equalTo(3));
+        Assert.that(actual.contains("tomato"));
+        Assert.that(actual.contains("carrot"));
+        Assert.that(actual.contains("celery"));
+    }
+
+    @Test
+    public function distinctReturnsUniqueItemsByReferenceForClasses()
+    {
+        var array = [new Pineapple("Ahmad"), new Pineapple("Muhammad"), new Pineapple("Ahmad")];
+        var actual = array.distinct();
+        
+        Assert.that(actual.length, Is.equalTo(3));
+        Assert.that(actual.where((p) => p.name == "Ahmad").length, Is.equalTo(2));
     }
 
     @Test
@@ -202,5 +239,12 @@ class LinqTest
     {
         Assert.that(["apple", "pear", "orange"].any(), Is.equalTo(true));
         Assert.that([].any(), Is.equalTo(false));
+    }
+}
+
+class Pineapple {
+    public var name(default, null):String;
+    public function new(name:String) {
+        this.name = name;
     }
 }
