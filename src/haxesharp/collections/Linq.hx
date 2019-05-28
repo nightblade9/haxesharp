@@ -3,7 +3,6 @@ package haxesharp.collections;
 using haxesharp.collections.Linq;
 import haxesharp.exceptions.InvalidOperationException;
 import haxesharp.exceptions.ArgumentNullException;
-import haxesharp.random.Random;
 
 /**
  *  LINQ-like extensions for arrays. To use, add: using haxesharp.collections.Linq;
@@ -148,13 +147,8 @@ class Linq<T>
     If desired, you can pass in a random number generator; if not, a new one is generated.
     */
     // Mostly copied from https://stackoverflow.com/a/110570/8641842
-    public static function shuffle<T>(array:Array<T>, ?rng:Random):Array<T>
+    public static function shuffle<T>(array:Array<T>):Array<T>
     {
-        if (rng == null)
-        {
-            rng = new Random();
-        }
-
         // Make a copy of the array
         var toReturn = new Array<T>();
         while (toReturn.length != array.length)
@@ -166,7 +160,7 @@ class Linq<T>
         var n = toReturn.length;
         while (n > 1)
         {
-            var k = rng.next(n);
+            var k = Math.floor(Math.random() * n);
             n--;
             var temp = toReturn[n];
             toReturn[n] = toReturn[k];
